@@ -1,0 +1,22 @@
+.icon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+}
+
+.logo-icon{
+    color:#8B5CF6;
+    font-size: 1.8rem;
+}
+
+.icon-title{
+    color: white;
+    font-weight: 700;
+    margin: 0;
+}
+
+.icon-title.purple{
+    color:#8B5CF6;
+}

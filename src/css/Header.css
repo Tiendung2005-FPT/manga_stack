@@ -1,0 +1,15 @@
+.header-container{
+    display: flex;
+    background-color: #0C0D10;
+    height: 64px;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20vh;
+    padding-right: 20vh;
+}
+
+.header-avatar{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}

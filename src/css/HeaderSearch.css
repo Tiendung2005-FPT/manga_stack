@@ -1,0 +1,27 @@
+.header-search-container{
+    color: #9CA3AF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid;
+    border-color: #2C2C30;
+    border-radius: 9999px;
+    background-color: #141419;
+    height: fit-content;
+    width: fit-content;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.header-search-input{
+    color: white;
+    border: none;
+    font-size: medium;
+}
+
+.header-search-input::placeholder{
+    color: #9CA3AF;
+}
