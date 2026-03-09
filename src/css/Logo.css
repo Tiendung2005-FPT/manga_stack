@@ -4,6 +4,7 @@
     align-items: center;
     gap: 5px;
     width: fit-content;
+    cursor: pointer;
 }
 
 .logo-icon{
@@ -19,4 +20,5 @@
 
 .icon-title.purple{
     color:#8B5CF6;
+    flex-wrap: wrap;
 }

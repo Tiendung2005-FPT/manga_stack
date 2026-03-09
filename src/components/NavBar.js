@@ -1,6 +1,5 @@
 import NavItem from "./NavItem";
 import "../css/NavBar.css"
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function NavBar() {

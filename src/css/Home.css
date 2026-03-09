@@ -1,0 +1,33 @@
+.home-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.spotlight{
+    display: flex;
+    color: #D1D5DB;
+}
+
+.spotlight-img{
+    border-radius: 0.75rem;
+}
+
+.spotlight-icon{
+    background-color: #2C244B;
+    border: 1px solid;
+    border-color: #49367E;
+    border-radius: 9999px;
+    color: #8B5CF6;
+    font-weight: 700;
+    font-size: 1.2rem;
+    width: fit-content;
+    height: fit-content;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.spotlight-title{
+    color: white;
+}
