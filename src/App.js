@@ -4,6 +4,7 @@ import "./css/System.css"
 import Container from "./components/Container";
 import Home from "./components/Home";
 import MangaDetail from "./components/MangaDetail";
+import ChapterReader from "./components/ChapterReader";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<Navigate to="/home" />} />
             <Route path='/home' element={<Home />} />
             <Route path='/manga/:id' element={<MangaDetail />} />
+            <Route path='/manga/:id/chapter/:chapterId' element={<ChapterReader />} />
           </Routes>
         </Container>
       </div>

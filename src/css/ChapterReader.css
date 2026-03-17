@@ -1,0 +1,329 @@
+.chapter-reader-container {
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    color: white;
+}
+
+.reader-header {
+    position: sticky;
+    top: 0;
+    background-color: #2a2a2a;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #444;
+    z-index: 100;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.reader-header.visible {
+    max-height: 120px;
+    opacity: 1;
+}
+
+.reader-header.hidden {
+    max-height: 0;
+    padding: 0 1rem;
+    opacity: 0;
+}
+
+.reader-info {
+    margin-bottom: 0.5rem;
+}
+
+.back-link {
+    color: #7C3AED;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.chapter-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.reader-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.chapter-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chapter-nav-btn {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #444;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.chapter-nav-btn:hover:not(:disabled) {
+    background-color: #444;
+}
+
+.chapter-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chapter-nav-btn.prev {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.chapter-nav-btn.prev:hover:not(:disabled) {
+    background-color: #c82333;
+    border-color: #c82333;
+}
+
+.chapter-nav-btn.next {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.chapter-nav-btn.next:hover:not(:disabled) {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+.chapter-info {
+    font-size: 0.875rem;
+    color: #ccc;
+    white-space: nowrap;
+}
+
+.mode-toggle {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mode-btn {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #444;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.mode-btn:hover {
+    background-color: #444;
+}
+
+.mode-btn.active {
+    background-color: #7C3AED;
+    border-color: #7C3AED;
+}
+
+.page-navigation {
+    display: flex;
+    align-items: center;
+}
+
+.page-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.page-input {
+    width: 2.5rem;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid #444;
+    background-color: #333;
+    color: white;
+    border-radius: 0.25rem;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+.page-input:focus {
+    outline: none;
+    border-color: #7C3AED;
+}
+
+.reader-content.vertical {
+    padding: 2rem 0;
+}
+
+.vertical-reader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.vertical-page {
+    width: 80%;
+    max-width: 800px;
+    margin-bottom: 0;
+}
+
+.vertical-page img {
+    width: 100%;
+    height: auto;
+    display: block;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    pointer-events: none;
+}
+
+.reader-content.horizontal {
+    position: relative;
+}
+
+.reader-content.horizontal.with-header {
+    height: calc(100vh - 80px);
+}
+
+.reader-content.horizontal.without-header {
+    height: calc(100vh - 20px);
+}
+
+.horizontal-reader {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-nav-area {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 30%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.page-nav-area.left {
+    left: 0;
+}
+
+.page-nav-area.right {
+    right: 0;
+}
+
+.page-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-content img {
+    height: 100%;
+    width: auto;
+    max-width: 90vw;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    pointer-events: none;
+}
+
+.header-toggle-btn {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 101;
+    background-color: #7C3AED;
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.header-toggle-btn:hover {
+    background-color: #6D28D9;
+}
+
+@media (max-width: 768px) {
+    .reader-header {
+        padding: 0.5rem;
+    }
+    
+    .reader-header.visible {
+        max-height: 140px;
+    }
+    
+    .reader-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+    
+    .chapter-nav {
+        justify-content: center;
+    }
+    
+    .chapter-nav-btn {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    .chapter-info {
+        font-size: 0.75rem;
+    }
+    
+    .mode-toggle {
+        justify-content: center;
+    }
+    
+    .vertical-page {
+        width: 95%;
+    }
+    
+    .page-nav-area {
+        width: 40%;
+    }
+    
+    .header-toggle-btn {
+        top: 5px;
+        right: 10px;
+    }
+}
