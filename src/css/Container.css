@@ -1,8 +1,8 @@
 .body-container{
     background: linear-gradient(to bottom, #252526, #0A0A0C);
     flex: 1;
-    padding-left: 20vh;
-    padding-right: 20vh;
+    padding-left: 15vw;
+    padding-right: 15vw;
     padding-top: 5vh;
     padding-bottom: 5vh;
 }

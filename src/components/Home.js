@@ -1,31 +1,100 @@
 import { useEffect, useState } from "react"
 import "../css/Home.css"
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
+import MangaCard from "./MangaCard";
+import { Col, Row } from "react-bootstrap";
 
 export default function Home() {
+    const [manga, setManga] = useState([]);
     const [spotlight, setSpotlight] = useState();
+    const params = useSearchParams();
+    const [searchParams] = useSearchParams();
+    const currentPage = searchParams.get("page");
+    const [page, setPage] = useState(currentPage || 1)
 
     useEffect(() => {
-        axios.get('http://localhost:9999/manga?_limit=1')
-            .then(res => setSpotlight(res.data[0]))
+        const fetchData = async () => {
+            const mangaRes = await axios.get(`http://localhost:9999/manga`)
+            const mangaData = mangaRes.data;
+
+            const ratingRes = await axios.get('http://localhost:9999/ratings');
+            const ratingData = ratingRes.data;
+
+            const mangaRatings = mangaData.map(m => {
+                const mangaRating = ratingData.filter(r => m.id === r.mangaId);
+                let sum = 0;
+                const count = mangaRating.length;
+                mangaRating.forEach(r => sum += r.rating);
+                const average = sum / count;
+                return {
+                    ...m,
+                    avg: average,
+                    count: count
+                }
+            })
+
+            const topTen = mangaRatings.sort((a, b) => b.avg - a.avg).slice(0, 10);
+
+            const mangaSpotlight = mangaRatings.sort((a, b) => b.count - a.count)[0];
+
+            setManga(topTen);
+            setSpotlight(mangaSpotlight)
+        };
+
+        fetchData();
     }, [])
 
     useEffect(() => {
         console.log(spotlight);
     }, [spotlight])
 
+
     return (
         <div className="home-container">
             {spotlight && (
                 <div className="spotlight">
-                    <img src={spotlight.coverUrl} className="spotlight-img"></img>
-                    <div className="d-flex flex-column">
-                        <div className="spotlight-icon">Spotlight</div>
-                        <h3 className="spotlight-title">{spotlight.title}</h3>
-                        <div>{spotlight.description}</div>
+                    <div>
+                        <img src={spotlight.coverUrl} className="spotlight-img"></img>
+                    </div>
+                    <div className="d-flex flex-column spotlight-info">
+                        <div className="spotlight-icon">SPOTLIGHT</div>
+                        <h1 className="spotlight-title">{spotlight.title}</h1>
+                        <div className="d-flex gap-3 align-items-center">
+                            <div className="d-flex gap-1 align-items-center">
+                                <i className="bi bi-star-fill"></i>
+                                <div>{spotlight.avg}</div>
+                            </div>
+                            <div>•</div>
+                            <div>{spotlight.year}</div>
+                            <div>•</div>
+                            <div className={`spotlight-status ${spotlight.status}`}>{spotlight.status.charAt(0).toUpperCase() + spotlight.status.slice(1)}</div>
+                        </div>
+                        <div className="spotlight-description">{spotlight.description}</div>
+                        <div className="d-flex gap-4">
+                            <button className="spotlight-read-button button">
+                                <i className="fa-solid fa-book-open-reader"></i>
+                                Read First Chapter
+                            </button>
+                            <button className="button spotlight-bookmark"><i className="bi bi-bookmark"></i></button>
+                        </div>
                     </div>
                 </div>
             )}
+            <div className="trending-section">
+                <div className="trending-bar">
+                    <h2 className="trending-label">
+                        Trending Now
+                    </h2>
+                </div>
+                <Row sm={1} md={5}>
+                    {manga.length > 0 && manga.map(m => (
+                        <Col>
+                            <MangaCard manga={m}></MangaCard>
+                        </Col>
+                    ))}
+                </Row>
+            </div>
         </div>
     )
 }

@@ -1,15 +1,28 @@
 .home-container{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    gap: 4rem;
 }
 
 .spotlight{
     display: flex;
     color: #D1D5DB;
+    gap: 2rem;
+    justify-content: center;
+    width: fit-content;
+    flex: 1;
 }
 
 .spotlight-img{
     border-radius: 0.75rem;
+    width: 288px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.spotlight-img:hover{
+    transform: scale(1.05);
 }
 
 .spotlight-icon{
@@ -19,15 +32,81 @@
     border-radius: 9999px;
     color: #8B5CF6;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     width: fit-content;
     height: fit-content;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    letter-spacing: 0.1rem;
+}
+
+.spotlight-info{
+    max-width: 50vw;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .spotlight-title{
     color: white;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 3.75rem;
+}
+
+.bi-star-fill{
+    color: #E9B309;
+}
+
+.spotlight-status.ongoing{
+    color: #E9B309;
+}
+
+.spotlight-status.finished{
+    color: #4AD380;
+}
+
+.spotlight-description{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.spotlight-read-button{
+    background-color: #7C3AED;
+    color: white;
+    gap: 5px;
+    font-weight: 600;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border: none;
+}
+
+.spotlight-read-button:hover{
+    background-color: #8B5CF6;
+}
+
+.spotlight-bookmark{
+    width: 52px;
+    height: 52px;
+    background-color: #141419;
+    color: white;
+    border: 1px solid;
+    border-color: #2C2C30;
+}
+
+.spotlight-bookmark:hover{
+    background-color: #2C2C30;
+}
+
+.trending-label{
+    color: white;
+    font-weight: 700;
+    border-left: 5px solid #8B5CF6;
+    padding-left: 10px;
 }

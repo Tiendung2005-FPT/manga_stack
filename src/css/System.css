@@ -21,3 +21,30 @@ input:focus {
     flex-direction: column;
     min-height: 100vh;
 }
+
+.button {
+    transition: background-color 0.2s ease;
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+}
+
+.btn-purple{
+    transition: background-color 0.2s ease;
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: #7C3AED;
+    color: white;
+    gap: 5px;
+    font-weight: 600;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border: none;
+}
