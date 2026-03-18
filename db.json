@@ -3,23 +3,32 @@
     {
       "id": "user01",
       "username": "User 1",
+      "email": "user1@gmail.com",
       "password": "",
-      "role": "002"
+      "role": "role2"
     },
     {
       "id": "admin01",
       "username": "Admin 1",
+      "email": "admin1@gmail.com",
       "password": "",
-      "role": "001"
+      "role": "role1"
+    },
+    {
+      "id": "user1773828937528",
+      "username": "tiendung2005",
+      "email": "dungbloxx.2005@gmail.com",
+      "password": "$2b$10$fYBYCSQzKTFId93XyDVopuVY0uxHT//DoSPS0mJ3vHGn9GDYNtlfm",
+      "role": "role2"
     }
   ],
   "roles": [
     {
-      "id": "001",
+      "id": "role1",
       "title:": "Admin"
     },
     {
-      "id": "002",
+      "id": "role2",
       "title:": "User"
     }
   ],

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import "../css/Header.css"
 import HeaderAvatar from "./HeaderAvatar"
 import HeaderSearch from "./HeaderSearch"
@@ -17,7 +17,9 @@ export default function Header() {
                 <NavBar />
                 <div className="d-flex gap-3 justify-content-center align-items-center">
                     <HeaderSearch />
-                    <HeaderAvatar />
+                    <Link to="/auth">
+                        <HeaderAvatar />
+                    </Link>
                 </div>
             </div>
         </NavigateContext.Provider>
