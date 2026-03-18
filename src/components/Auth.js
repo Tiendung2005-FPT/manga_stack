@@ -109,7 +109,8 @@ export default function Auth() {
             }));
 
             alert('Login successful!');
-            navigate('/');
+            // Redirect to home page
+            navigate('/home');
 
         } catch (error) {
             console.error('Login error:', error);

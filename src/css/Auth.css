@@ -78,3 +78,12 @@
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
+
+.profile-info {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #3f3f46;
+    background-color: #2d2d30;
+    color: white;
+    font-size: 14px;
+}

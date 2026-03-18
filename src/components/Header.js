@@ -4,12 +4,19 @@ import HeaderAvatar from "./HeaderAvatar"
 import HeaderSearch from "./HeaderSearch"
 import Logo from "./Logo"
 import NavBar from "./NavBar"
-import { createContext } from "react"
+import { createContext, useState, useEffect } from "react"
 
 export const NavigateContext = createContext();
 
 export default function Header() {
     const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState(null);
+
+    useEffect(() => {
+        const user = localStorage.getItem('currentUser');
+        setCurrentUser(user ? JSON.parse(user) : null);
+    }, []);
+
     return (
         <NavigateContext.Provider value={navigate}>
             <div className="header-container">
@@ -17,7 +24,7 @@ export default function Header() {
                 <NavBar />
                 <div className="d-flex gap-3 justify-content-center align-items-center">
                     <HeaderSearch />
-                    <Link to="/auth">
+                    <Link to={currentUser ? "/profile" : "/auth"}>
                         <HeaderAvatar />
                     </Link>
                 </div>

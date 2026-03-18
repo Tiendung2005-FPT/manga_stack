@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import MangaDetail from "./components/MangaDetail";
 import ChapterReader from "./components/ChapterReader";
 import Auth from "./components/Auth";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Navigate to="/home" />} />
             <Route path='/home' element={<Home />} />
             <Route path='/auth' element={<Auth />} />
+            <Route path='/profile' element={<Profile />} />
             <Route path='/manga/:id' element={<MangaDetail />} />
             <Route path='/manga/:id/chapter/:chapterId' element={<ChapterReader />} />
           </Routes>
