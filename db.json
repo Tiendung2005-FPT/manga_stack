@@ -20,6 +20,13 @@
       "email": "dungbloxx.2005@gmail.com",
       "password": "$2b$10$fYBYCSQzKTFId93XyDVopuVY0uxHT//DoSPS0mJ3vHGn9GDYNtlfm",
       "role": "role2"
+    },
+    {
+      "id": "user1774275955274",
+      "username": "av",
+      "email": "av@gmail.com",
+      "password": "$2b$10$j8p2uQgAHMSVau9iWNDjbOIBqOYNCxiqVDWUgxBugHOXHASIT3eCm",
+      "role": "role2"
     }
   ],
   "roles": [

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import MangaCard from "./MangaCard";
 import { Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
     const [manga, setManga] = useState([]);
@@ -44,7 +45,22 @@ export default function Home() {
 
         fetchData();
     }, [])
+    const navigate = useNavigate();
 
+    const handleReadFirstChapter = async () => {
+        try {
+            const res = await axios.get(`http://localhost:9999/chapters?mangaId=${spotlight.id}`);
+
+            const chapters = res.data.sort((a, b) => a.chapterNumber - b.chapterNumber);
+
+            if (chapters.length > 0) {
+                const firstChapter = chapters[0];
+                navigate(`/manga/${spotlight.id}/chapter/${firstChapter.id}`);
+            }
+        } catch (error) {
+            console.error("Error fetching chapters:", error);
+        }
+    };
     useEffect(() => {
         console.log(spotlight);
     }, [spotlight])
@@ -72,11 +88,13 @@ export default function Home() {
                         </div>
                         <div className="spotlight-description">{spotlight.description}</div>
                         <div className="d-flex gap-4">
-                            <button className="spotlight-read-button button">
+                            <button
+                                className="spotlight-read-button button"
+                                onClick={handleReadFirstChapter}
+                            >
                                 <i className="fa-solid fa-book-open-reader"></i>
                                 Read First Chapter
                             </button>
-                            <button className="button spotlight-bookmark"><i className="bi bi-bookmark"></i></button>
                         </div>
                     </div>
                 </div>
