@@ -87,11 +87,11 @@ export default function MangaDetail() {
                 <Col md={8} className="manga-info-section">
                     <div className="manga-title-section">
                         <h1 className="manga-detail-title">{manga.title}</h1>
-                        <div className="manga-meta d-flex flex-wrap gap-3 mb-3">
+                        <div className="manga-meta d-flex gap-3 mb-3">
                             <div className="d-flex align-items-center gap-1">
                                 <i className="bi bi-star-fill text-warning"></i>
                                 <span className="fw-bold">{manga.avgRating?.toFixed(1) || 'N/A'}</span>
-                                <span className="text-white">({manga.ratingCount || 0} reviews)</span>
+                                <span className="text-white m-0">({manga.ratingCount || 0} reviews)</span>
                             </div>
                             <div className="d-flex align-items-center gap-1">
                                 <i className="bi bi-calendar"></i>
