@@ -1,220 +1,335 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
+import '../css/Browse.css'
 import axios from "axios";
-import "../css/Browse.css";
+import MangaCard from "./MangaCard";
+import GenreChip from "./GenreChip";
+
+const api = axios.create({ baseURL: "http://localhost:9999" });
+
+async function fetchGenres() {
+    const res = await api.get("/genres");
+    return res.data;
+}
+
+async function fetchAllManga() {
+    const res = await api.get("/manga");
+    return res.data;
+}
+
+function applyFilters(mangaList, { keyword, genreFilters, status, sortField, sortDirection }) {
+    let result = [...mangaList];
+
+    if (keyword.trim()) {
+        const kw = keyword.toLowerCase();
+        result = result.filter(m =>
+            m.title.toLowerCase().includes(kw) ||
+            (m.description || "").toLowerCase().includes(kw)
+        );
+    }
+
+    if (status) {
+        result = result.filter(m => m.status === status);
+    }
+
+    const included = Object.entries(genreFilters).filter(([, s]) => s === "included").map(([id]) => id);
+    const excluded = Object.entries(genreFilters).filter(([, s]) => s === "excluded").map(([id]) => id);
+
+    if (included.length > 0) {
+        result = result.filter(m => included.every(id => m.genres.includes(id)));
+    }
+    if (excluded.length > 0) {
+        result = result.filter(m => excluded.every(id => !m.genres.includes(id)));
+    }
+
+    if (sortField && sortDirection !== "none") {
+        const dir = sortDirection === "asc" ? 1 : -1;
+        result.sort((a, b) => {
+            if (sortField === "title") {
+                return dir * a.title.localeCompare(b.title);
+            }
+            if (sortField === "year") {
+                return dir * (a.year - b.year);
+            }
+            if (sortField === "uploadedAt") {
+                return dir * (new Date(a.uploadedAt) - new Date(b.uploadedAt));
+            }
+            return 0;
+        });
+    } else if (!sortField || sortDirection === "none") {
+        result.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    }
+
+    return result;
+}
+
+const SORT_OPTIONS = [
+    { label: "Upload Date", field: "uploadedAt" },
+    { label: "Title", field: "title" },
+    { label: "Year", field: "year" },
+];
+
+function SearchBar({ value, onChange }) {
+    return (
+        <div className="br-search">
+            <svg className="br-search__icon" viewBox="0 0 20 20" fill="none">
+                <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" strokeWidth="1.6" />
+                <path d="M13 13l4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+            <input
+                className="br-search__input"
+                type="text"
+                placeholder="Search titles…"
+                value={value}
+                onChange={e => onChange(e.target.value)}
+                autoComplete="off"
+            />
+            {value && (
+                <button className="br-search__clear" onClick={() => onChange("")} aria-label="Clear">
+                    ×
+                </button>
+            )}
+        </div>
+    );
+}
+
+function FilterPill({ label, active, onClick }) {
+    return (
+        <button className={`br-pill ${active ? "br-pill--active" : ""}`} onClick={onClick}>
+            {label}
+        </button>
+    );
+}
+
+
+function SortButton({ label, field, currentField, direction, onToggle }) {
+    const active = currentField === field && direction !== "none";
+    const arrow = active ? (direction === "asc" ? " ↑" : " ↓") : "";
+    return (
+        <button className={`br-sort-btn ${active ? "br-sort-btn--active" : ""}`} onClick={() => onToggle(field)}>
+            {label}{arrow}
+        </button>
+    );
+}
 
 export default function Browse() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [mangaList, setMangaList] = useState([]);
-    const [filteredManga, setFilteredManga] = useState([]);
-    const [genres, setGenres] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-    const [selectedGenre, setSelectedGenre] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
-    const [selectedStatus, setSelectedStatus] = useState('');
 
-    useEffect(() => {
-        fetchData();
+    const [allManga, setAllManga] = useState([]);
+    const [genreList, setGenreList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+    const [genreFilters, setGenreFilters] = useState({});
+    const [selectedStatus, setSelectedStatus] = useState("");
+
+    const [sortField, setSortField] = useState(null);
+    const [sortDirection, setSortDirection] = useState("none");
+
+    const [showFilters, setShowFilters] = useState(false);
+
+    const doFetch = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const [manga, genres] = await Promise.all([fetchAllManga(), fetchGenres()]);
+            setAllManga(manga);
+            setGenreList(genres);
+        } catch (err) {
+            setError("Failed to load manga. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
-    const fetchData = async () => {
-        try {
-            const [mangaResponse, genresResponse] = await Promise.all([
-                axios.get('http://localhost:9999/manga'),
-                axios.get('http://localhost:9999/genres')
-            ]);
-            setMangaList(mangaResponse.data);
-            setGenres(genresResponse.data);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setLoading(false);
-        }
-    };
+    useEffect(() => { doFetch(); }, [doFetch]);
 
-    const applyFilters = useCallback(() => {
-        let filtered = [...mangaList];
-
-        // Search filter
-        if (searchTerm) {
-            filtered = filtered.filter(manga =>
-                manga.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                manga.description.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-
-        // Genre filter
-        if (selectedGenre) {
-            filtered = filtered.filter(manga =>
-                manga.genres.includes(selectedGenre)
-            );
-        }
-
-        // Year filter
-        if (selectedYear) {
-            filtered = filtered.filter(manga =>
-                manga.year.toString() === selectedYear
-            );
-        }
-
-        // Status filter
-        if (selectedStatus) {
-            filtered = filtered.filter(manga =>
-                manga.status === selectedStatus
-            );
-        }
-
-        setFilteredManga(filtered);
-    }, [mangaList, searchTerm, selectedGenre, selectedYear, selectedStatus]);
+    const mangaList = useMemo(() => applyFilters(allManga, {
+        keyword: searchTerm,
+        genreFilters,
+        status: selectedStatus,
+        sortField,
+        sortDirection,
+    }), [allManga, searchTerm, genreFilters, selectedStatus, sortField, sortDirection]);
 
     useEffect(() => {
-        applyFilters();
-    }, [applyFilters]);
+        if (searchTerm) setSearchParams({ search: searchTerm });
+        else setSearchParams({});
+    }, [searchTerm]);
 
-    const getGenreName = (genreId) => {
-        const genre = genres.find(g => g.id === genreId);
-        return genre ? genre.name : 'Unknown';
+    const toggleGenre = id => {
+        setGenreFilters(prev => {
+            const cur = prev[id] || "none";
+            const next = cur === "none" ? "included" : cur === "included" ? "excluded" : "none";
+            return { ...prev, [id]: next };
+        });
     };
 
-    const getGenreNames = (genreIds) => {
-        return genreIds.map(id => getGenreName(id)).join(', ');
-    };
+    const clearGenreFilters = () => setGenreFilters({});
 
-    const handleSearchChange = (e) => {
-        const value = e.target.value;
-        setSearchTerm(value);
-        if (value) {
-            setSearchParams({ search: value });
+    const toggleSort = field => {
+        if (sortField !== field) {
+            setSortField(field);
+            setSortDirection(field === "rating" ? "desc" : "asc");
         } else {
-            setSearchParams({});
+            const next = field === "rating"
+                ? sortDirection === "desc" ? "asc" : sortDirection === "asc" ? "none" : "desc"
+                : sortDirection === "asc" ? "desc" : sortDirection === "desc" ? "none" : "asc";
+            setSortDirection(next);
+            if (next === "none") setSortField(null);
         }
     };
 
-    const getYears = () => {
-        const years = [...new Set(mangaList.map(m => m.year))].sort((a, b) => b - a);
-        return years;
+    const clearAll = () => {
+        setSearchTerm("");
+        setGenreFilters({});
+        setSelectedStatus("");
+        setSortField(null);
+        setSortDirection("none");
+        setSearchParams({});
     };
 
-    if (loading) {
-        return <div className="loading">Loading manga...</div>;
-    }
+    const activeFilterCount = useMemo(() => {
+        return Object.values(genreFilters).filter(s => s !== "none").length
+            + (selectedStatus ? 1 : 0);
+    }, [genreFilters, selectedStatus]);
+
+    const activeSortLabel = useMemo(() => {
+        if (!sortField || sortDirection === "none") return null;
+        const opt = SORT_OPTIONS.find(o => o.field === sortField);
+        return `${opt?.label} ${sortDirection === "asc" ? "↑" : "↓"}`;
+    }, [sortField, sortDirection]);
 
     return (
-        <div className="browse-container">
-            <div className="browse-header">
-                <h1 className="browse-title">Browse Manga</h1>
-                <div className="search-section">
-                    <div className="search-bar">
-                        <i className="fa-solid fa-magnifying-glass"></i>
-                        <input
-                            type="text"
-                            placeholder="Search manga by title or description..."
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            className="search-input"
-                        />
-                    </div>
-                </div>
-            </div>
+        <div>
+            <div className="br">
+                <header className="br-header">
+                    <div className="br-header__eyebrow">Catalogue</div>
+                    <h1 className="br-header__title">Browse Manga</h1>
+                    <p className="br-header__sub">
+                        {loading
+                            ? "Loading…"
+                            : mangaList.length === allManga.length
+                                ? `${allManga.length} titles`
+                                : `${mangaList.length} of ${allManga.length} titles`
+                        }
+                    </p>
+                </header>
 
-            <div className="browse-content">
-                <div className="filters-sidebar">
-                    <h3 className="filter-title">Filters</h3>
+                <div className="br-toolbar">
+                    <SearchBar value={searchTerm} onChange={setSearchTerm} />
 
-                    <div className="filter-section">
-                        <h4>Genre</h4>
-                        <select
-                            value={selectedGenre}
-                            onChange={(e) => setSelectedGenre(e.target.value)}
-                            className="filter-select"
+                    <div className="br-toolbar__actions">
+                        <button
+                            className={`br-filter-toggle ${showFilters ? "br-filter-toggle--open" : ""}`}
+                            onClick={() => setShowFilters(v => !v)}
                         >
-                            <option value="">All Genres</option>
-                            {genres.map(genre => (
-                                <option key={genre.id} value={genre.id}>{genre.name}</option>
+                            <svg viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.7">
+                                <path d="M1 4h16M4 9h10M7 14h4" />
+                            </svg>
+                            Filters
+                            {activeFilterCount > 0 && (
+                                <span className="br-filter-toggle__badge">{activeFilterCount}</span>
+                            )}
+                        </button>
+
+                        <div className="br-sort-row">
+                            {SORT_OPTIONS.map(o => (
+                                <SortButton
+                                    key={o.field}
+                                    label={o.label}
+                                    field={o.field}
+                                    currentField={sortField}
+                                    direction={sortDirection}
+                                    onToggle={toggleSort}
+                                />
                             ))}
-                        </select>
-                    </div>
-
-                    <div className="filter-section">
-                        <h4>Year</h4>
-                        <select
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(e.target.value)}
-                            className="filter-select"
-                        >
-                            <option value="">All Years</option>
-                            {getYears().map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="filter-section">
-                        <h4>Status</h4>
-                        <select
-                            value={selectedStatus}
-                            onChange={(e) => setSelectedStatus(e.target.value)}
-                            className="filter-select"
-                        >
-                            <option value="">All Status</option>
-                            <option value="ongoing">Ongoing</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-
-                    <button
-                        className="clear-filters-btn"
-                        onClick={() => {
-                            setSelectedGenre('');
-                            setSelectedYear('');
-                            setSelectedStatus('');
-                            setSearchTerm('');
-                            setSearchParams({});
-                        }}
-                    >
-                        Clear Filters
-                    </button>
-                </div>
-
-                <div className="manga-grid">
-                    {filteredManga.length === 0 ? (
-                        <div className="no-results">
-                            <h3>No manga found</h3>
-                            <p>Try adjusting your search or filters</p>
                         </div>
-                    ) : (
-                        filteredManga.map(manga => (
-                            <Link to={`/manga/${manga.id}`} key={manga.id} className="manga-card">
-                                <div className="manga-cover">
-                                    <img
-                                        src={manga.coverUrl || `https://picsum.photos/seed/${manga.id}/200/280.jpg`}
-                                        alt={manga.title}
-                                        className="manga-image"
-                                    />
-                                </div>
-                                <div className="manga-info">
-                                    <h3 className="manga-title">{manga.title}</h3>
-                                    <p className="manga-description">
-                                        {manga.description ?
-                                            manga.description.substring(0, 100) + '...' :
-                                            'No description available'
-                                        }
-                                    </p>
-                                    <div className="manga-meta">
-                                        <span className="manga-year">{manga.year}</span>
-                                        <span className={`manga-status ${manga.status}`}>
-                                            {manga.status}
-                                        </span>
-                                    </div>
-                                    <div className="manga-genres">
-                                        {getGenreNames(manga.genres)}
-                                    </div>
-                                </div>
-                            </Link>
-                        ))
-                    )}
+
+                        {(activeFilterCount > 0 || activeSortLabel || searchTerm) && (
+                            <button className="br-clear-btn" onClick={clearAll}>Clear all</button>
+                        )}
+                    </div>
                 </div>
+
+                {activeSortLabel && (
+                    <div className="br-active-row">
+                        <span className="br-active-label">Sorted by:</span>
+                        <span className="br-active-tag">{activeSortLabel}</span>
+                    </div>
+                )}
+
+                <div className={`br-filter-panel ${showFilters ? "br-filter-panel--open" : ""}`}>
+                    <div className="br-filter-panel__inner">
+                        <div className="br-filter-section">
+                            <div className="br-filter-section__head">
+                                <span>Status</span>
+                            </div>
+                            <div className="br-filter-section__body">
+                                {["", "ongoing", "completed"].map(s => (
+                                    <FilterPill
+                                        key={s || "all"}
+                                        label={s ? s.charAt(0).toUpperCase() + s.slice(1) : "All"}
+                                        active={selectedStatus === s}
+                                        onClick={() => setSelectedStatus(s)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="br-filter-section">
+                            <div className="br-filter-section__head">
+                                <span>Genres</span>
+                                {activeFilterCount > 0 && (
+                                    <button className="br-genre-clear" onClick={clearGenreFilters}>Clear</button>
+                                )}
+                            </div>
+                            <div className="br-filter-section__body br-filter-section__body--genres">
+                                {genreList.map(g => (
+                                    <GenreChip
+                                        key={g.id}
+                                        name={g.name}
+                                        state={genreFilters[g.id] || "none"}
+                                        onToggle={() => toggleGenre(g.id)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {error ? (
+                    <div className="br-message br-message--error">
+                        <span>{error}</span>
+                        <button onClick={doFetch}>Retry</button>
+                    </div>
+                ) : loading ? (
+                    <div className="br-skeleton-grid">
+                        {Array.from({ length: 12 }).map((_, i) => (
+                            <div key={i} className="br-skeleton">
+                                <div className="br-skeleton__cover" />
+                                <div className="br-skeleton__line" />
+                                <div className="br-skeleton__line br-skeleton__line--short" />
+                            </div>
+                        ))}
+                    </div>
+                ) : mangaList.length === 0 ? (
+                    <div className="br-message">
+                        <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <circle cx="24" cy="24" r="20" />
+                            <path d="M16 24h16M24 16v16" opacity=".3" />
+                        </svg>
+                        <p>No manga found</p>
+                        <span>Try adjusting your search or filters</span>
+                    </div>
+                ) : (
+                    <div className="br-grid">
+                        {mangaList.map(manga => (
+                            <MangaCard key={manga.id} manga={manga} genres={genreList} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

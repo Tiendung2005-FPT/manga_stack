@@ -49,15 +49,16 @@
 }
 
 .reader-controls {
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
 }
 
 .chapter-nav {
     display: flex;
+    justify-content: start;
     align-items: center;
     gap: 1rem;
 }
@@ -105,14 +106,16 @@
     border-color: #218838;
 }
 
-.chapter-info {
+.chapter-reader-header {
     font-size: 0.875rem;
+    width: fit-content;
     color: #ccc;
     white-space: nowrap;
 }
 
 .mode-toggle {
     display: flex;
+    justify-content: end;
     gap: 0.5rem;
 }
 
@@ -138,6 +141,7 @@
 
 .page-navigation {
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -227,7 +231,7 @@
     position: absolute;
     top: 0;
     height: 100%;
-    width: 30%;
+    width: 50%;
     cursor: pointer;
     z-index: 10;
 }
@@ -306,7 +310,7 @@
         font-size: 0.75rem;
     }
     
-    .chapter-info {
+    .chapter-reader-header {
         font-size: 0.75rem;
     }
     

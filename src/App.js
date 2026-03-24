@@ -10,6 +10,13 @@ import Profile from "./components/Profile";
 import Browse from "./components/Browse";
 import MyList from "./components/MyList";
 
+import AdminLayout from "./components/Admin/AdminLayout";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import UsersCRUD from "./components/Admin/UsersCRUD";
+import MangaCRUD from "./components/Admin/MangaCRUD";
+import ChaptersCRUD from "./components/Admin/ChaptersCRUD";
+import GenresCRUD from "./components/Admin/GenresCRUD";
+
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +32,14 @@ function App() {
             <Route path='/browse' element={<Browse />} />
             <Route path='/manga/:id' element={<MangaDetail />} />
             <Route path='/manga/:id/chapter/:chapterId' element={<ChapterReader />} />
+            
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<UsersCRUD />} />
+              <Route path="mangas" element={<MangaCRUD />} />
+              <Route path="chapters" element={<ChaptersCRUD />} />
+              <Route path="genres" element={<GenresCRUD />} />
+            </Route>
           </Routes>
         </Container>
       </div>

@@ -5,6 +5,7 @@ import HeaderSearch from "./HeaderSearch";
 import Logo from "./Logo";
 import NavBar from "./NavBar";
 import { createContext, useState, useEffect } from "react";
+import { Col, Row } from "react-bootstrap";
 
 export const NavigateContext = createContext();
 
@@ -32,21 +33,28 @@ export default function Header() {
 
     return (
         <NavigateContext.Provider value={navigate}>
-            <div className="header-container">
-                <Logo />
-                <NavBar />
+            <Row className="header-container">
+                <Col md={4}>
+                    <Logo />
+                </Col>
 
-                <div className="d-flex gap-3 justify-content-center align-items-center">
-                    
-                    {!location.pathname.startsWith("/browse") && (
-                        <HeaderSearch />
-                    )}
+                <Col md={4}>
+                    <NavBar />
+                </Col>
 
-                    <Link to={currentUser ? "/profile" : "/auth"}>
-                        <HeaderAvatar />
-                    </Link>
-                </div>
-            </div>
+                <Col md={4}>
+                    <div className="d-flex gap-3 justify-content-end align-items-center">
+
+                        {!location.pathname.startsWith("/browse") && (
+                            <HeaderSearch />
+                        )}
+
+                        <Link to={currentUser ? "/profile" : "/auth"}>
+                            <HeaderAvatar />
+                        </Link>
+                    </div>
+                </Col>
+            </Row>
         </NavigateContext.Provider>
     );
 }

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function MyList() {
     const [mangaList, setMangaList] = useState([])
+    const [genres, setGenres] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -34,24 +35,30 @@ export default function MyList() {
             }
         }
 
+        const fetchGenres = async () => {
+            const genreRes = await axios.get('http://localhost:9999/genres');
+            const genreData = genreRes.data;
+            setGenres(genreData);
+        }
         fetchFavorites()
+        fetchGenres();
     }, [])
 
     return (
         <Container className="mt-4">
             <h2 className="text-white mb-4">My Favorite Manga</h2>
 
-            <Row>
+            <div className="ml-grid">
                 {mangaList.length > 0 ? (
                     mangaList.map(m => (
-                        <Col md={3} key={m.id}>
-                            <MangaCard manga={m} />
-                        </Col>
+                        <div key={m.id}>
+                            <MangaCard manga={m} genres={genres} />
+                        </div>
                     ))
                 ) : (
                     <p className="text-white">No favorites yet.</p>
                 )}
-            </Row>
+            </div>
         </Container>
     )
 }

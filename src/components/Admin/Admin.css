@@ -1,0 +1,225 @@
+:root {
+    --admin-bg: #0f111a;
+    --admin-sidebar-bg: #1a1d2b;
+    --admin-card-bg: #1a1d2b;
+    --admin-border: #2e3245;
+    --admin-text-main: #ffffff;
+    --admin-text-muted: #94a3b8;
+    --admin-primary: #8b5cf6;
+    --admin-primary-hover: #a78bfa;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: calc(100vh - 80px);
+    background-color: var(--admin-bg);
+    color: var(--admin-text-main);
+    margin: -32px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background-color: var(--admin-sidebar-bg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--admin-border);
+}
+
+.admin-logo {
+    color: var(--admin-primary);
+    margin-bottom: 32px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.admin-nav-link {
+    color: var(--admin-text-muted);
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.admin-nav-link:hover,
+.admin-nav-link.active {
+    background-color: var(--admin-primary);
+    color: var(--admin-text-main);
+}
+
+.admin-main {
+    flex: 1;
+    background-color: var(--admin-bg);
+    padding: 32px;
+    overflow-y: auto;
+}
+
+.admin-content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-page-title {
+    color: var(--admin-text-main);
+    font-size: 28px;
+    margin-bottom: 32px;
+    font-weight: 600;
+}
+
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.admin-stat-card {
+    background-color: var(--admin-card-bg);
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--admin-border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.admin-stat-title {
+    color: var(--admin-text-muted);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-stat-value {
+    color: var(--admin-primary);
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.admin-table-container {
+    background-color: var(--admin-card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    overflow-x: auto;
+    border: 1px solid var(--admin-border);
+}
+
+.admin-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--admin-text-main);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-table th {
+    color: var(--admin-text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+}
+
+.admin-table tr:hover td {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.admin-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.admin-btn-primary {
+    background-color: var(--admin-primary);
+    color: white;
+}
+
+.admin-btn-primary:hover {
+    background-color: var(--admin-primary-hover);
+    transform: translateY(-1px);
+}
+
+.admin-btn-danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+.admin-btn-danger:hover {
+    background-color: #f87171;
+}
+
+.admin-btn-warning {
+    background-color: #f59e0b;
+    color: #000000;
+}
+
+.admin-btn-warning:hover {
+    background-color: #fbbf24;
+}
+
+.admin-action-cell {
+    display: flex;
+    gap: 8px;
+}
+
+.modal-content.admin-modal {
+    background-color: var(--admin-card-bg);
+    color: var(--admin-text-main);
+    border: 1px solid var(--admin-border);
+}
+
+.admin-modal .modal-header {
+    border-bottom-color: var(--admin-border);
+}
+
+.admin-modal .modal-footer {
+    border-top-color: var(--admin-border);
+}
+
+.admin-modal .form-label {
+    color: var(--admin-text-muted);
+}
+
+.admin-modal .form-control,
+.admin-modal .form-select {
+    background-color: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+    color: var(--admin-text-main);
+}
+
+.admin-modal .form-control:focus,
+.admin-modal .form-select:focus {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+    background-color: var(--admin-bg);
+    color: var(--admin-text-main);
+}
+
+.select-option{
+    background-color: var(--admin-bg);
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import "../css/ChapterReader.css"
 import axios from "axios"
+import { Col, Row } from "react-bootstrap"
 
 export default function ChapterReader() {
     const { id, chapterId } = useParams()
@@ -123,29 +124,31 @@ export default function ChapterReader() {
                     </h2>
                 </div>
 
-                <div className="reader-controls">
-                    <div className="chapter-nav">
-                        <button
-                            className="chapter-nav-btn prev"
-                            onClick={goToPreviousChapter}
-                            disabled={getCurrentChapterIndex() === 0}
-                        >
-                            <i className="bi bi-chevron-left"></i> Prev
-                        </button>
-                        <span className="chapter-info">
-                            Chapter {getCurrentChapterIndex() + 1} of {allChapters.length}
-                        </span>
-                        <button
-                            className="chapter-nav-btn next"
-                            onClick={goToNextChapter}
-                            disabled={getCurrentChapterIndex() === allChapters.length - 1}
-                        >
-                            Next <i className="bi bi-chevron-right"></i>
-                        </button>
-                    </div>
+                <Row className="reader-controls">
+                    <Col md={mode === 'horizontal' ? 5 : 6}>
+                        <div className="chapter-nav">
+                            <button
+                                className="chapter-nav-btn prev"
+                                onClick={goToPreviousChapter}
+                                disabled={getCurrentChapterIndex() === 0}
+                            >
+                                <i className="bi bi-chevron-left"></i> Prev
+                            </button>
+                            <span className="chapter-reader-header">
+                                Chapter {getCurrentChapterIndex() + 1} of {allChapters.length}
+                            </span>
+                            <button
+                                className="chapter-nav-btn next"
+                                onClick={goToNextChapter}
+                                disabled={getCurrentChapterIndex() === allChapters.length - 1}
+                            >
+                                Next <i className="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </Col>
 
                     {mode === 'horizontal' && (
-                        <div className="page-navigation">
+                        <Col md={2} className="page-navigation">
                             <span className="page-info">
                                 <input
                                     type="text"
@@ -156,10 +159,10 @@ export default function ChapterReader() {
                                 />
                                 /{pages.length}
                             </span>
-                        </div>
+                        </Col>
                     )}
 
-                    <div className="mode-toggle">
+                    <Col md={mode === 'horizontal' ? 5 : 6} className="mode-toggle">
                         <button
                             className={`mode-btn ${mode === 'vertical' ? 'active' : ''}`}
                             onClick={() => setMode('vertical')}
@@ -172,8 +175,8 @@ export default function ChapterReader() {
                         >
                             Horizontal
                         </button>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </div>
 
             <button className="header-toggle-btn" onClick={toggleHeader}>

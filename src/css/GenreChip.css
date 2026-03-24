@@ -1,0 +1,35 @@
+.gc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50px;
+    color: #94a3b8;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 0.3rem 0.85rem;
+    transition: all .15s;
+}
+
+.gc-chip:hover { border-color: rgba(255,255,255,0.2); color: #f1f5f9; }
+
+.gc-chip--included {
+    background: rgba(52,211,153,0.08);
+    border-color: #34d399;
+    color: #34d399;
+}
+
+.gc-chip--excluded {
+    background: rgba(248,113,113,0.08);
+    border-color: #f87171;
+    color: #f87171;
+    text-decoration: line-through;
+}
+
+.gc-chip__badge {
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1;
+}

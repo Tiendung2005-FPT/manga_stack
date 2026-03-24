@@ -110,3 +110,15 @@
     border-left: 5px solid #8B5CF6;
     padding-left: 10px;
 }
+
+.ho-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 1.25rem;
+}
+
+.ml-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.25rem;
+}

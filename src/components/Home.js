@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "../css/Home.css"
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import MangaCard from "./MangaCard";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
     const [manga, setManga] = useState([]);
     const [spotlight, setSpotlight] = useState();
+    const [genres, setGenres] = useState([]);
     const params = useSearchParams();
     const [searchParams] = useSearchParams();
     const currentPage = searchParams.get("page");
@@ -21,6 +22,11 @@ export default function Home() {
 
             const ratingRes = await axios.get('http://localhost:9999/ratings');
             const ratingData = ratingRes.data;
+
+            const genreRes = await axios.get('http://localhost:9999/genres');
+            const genreData = genreRes.data;
+
+            setGenres(genreData)
 
             const mangaRatings = mangaData.map(m => {
                 const mangaRating = ratingData.filter(r => m.id === r.mangaId);
@@ -61,17 +67,15 @@ export default function Home() {
             console.error("Error fetching chapters:", error);
         }
     };
-    useEffect(() => {
-        console.log(spotlight);
-    }, [spotlight])
-
 
     return (
         <div className="home-container">
             {spotlight && (
                 <div className="spotlight">
                     <div>
-                        <img src={spotlight.coverUrl} className="spotlight-img"></img>
+                        <Link to={`/manga/${spotlight.id}`}>
+                            <img src={spotlight.coverUrl} className="spotlight-img"></img>
+                        </Link>
                     </div>
                     <div className="d-flex flex-column spotlight-info">
                         <div className="spotlight-icon">SPOTLIGHT</div>
@@ -105,13 +109,13 @@ export default function Home() {
                         Trending Now
                     </h2>
                 </div>
-                <Row sm={1} md={5}>
+                <div className="ho-grid">
                     {manga.length > 0 && manga.map(m => (
-                        <Col>
-                            <MangaCard manga={m}></MangaCard>
-                        </Col>
+                        <div>
+                            <MangaCard manga={m} genres={genres}></MangaCard>
+                        </div>
                     ))}
-                </Row>
+                </div>
             </div>
         </div>
     )
