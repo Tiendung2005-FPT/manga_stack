@@ -1,155 +1,133 @@
 .manga-detail-container {
-    padding: 2rem 0;
+    background: #0f0f1a;
+    min-height: 100vh;
+    color: white;
+    padding: 40px 0;
 }
 
-.manga-detail-header {
-    margin-bottom: 2rem;
+/* CARD */
+.main-card {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-.manga-cover-section {
+/* LEFT */
+.left-panel {
     text-align: center;
 }
 
 .manga-detail-cover {
     width: 100%;
-    max-width: 300px;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.manga-actions {
+.action-box {
+    margin-top: 15px;
+}
+
+/* RIGHT */
+.right-panel {
+    padding-left: 25px;
+}
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+/* RATING */
+.rating-box {
+    margin-top: 10px;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 10px;
+    align-items: center;
 }
 
-.manga-info-section {
-    padding-left: 2rem;
-}
-
-.manga-detail-title {
-    font-size: 2.5rem;
+.avg {
+    font-size: 1.4rem;
     font-weight: bold;
-    margin-bottom: 1rem;
-    color: white;
-    line-height: 1.2;
+    color: #facc15;
 }
 
-.manga-meta {
-    font-size: 1.1rem;
-    color: white;
-    margin-bottom: 1rem;
+.count {
+    color: #aaa;
 }
 
-.manga-meta i {
-    color: #ffc107;
+/* STARS */
+.stars i {
+    font-size: 22px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-.status-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
+.stars i:hover {
+    transform: scale(1.2);
 }
 
-.status-badge.ongoing {
-    background-color: #d4edda;
-    color: #155724;
+.stars .active {
+    color: #facc15;
 }
 
-.status-badge.completed {
-    background-color: #cce5ff;
-    color: #004085;
+/* GENRE */
+.genres {
+    margin-top: 15px;
 }
 
-.status-badge.hiatus {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.genres-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.genre-badge {
-    background-color: #8b5cf6;
-    color: white;
-    padding: 0.375rem 0.75rem;
+.genre {
+    background: #7c3aed;
+    padding: 5px 10px;
     border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 500;
+    margin-right: 5px;
+    font-size: 13px;
 }
 
-.manga-description-section {
-    margin: 2rem 0;
+/* DESCRIPTION */
+.description-box {
+    margin-top: 20px;
 }
 
-.manga-description-section h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: white;
+.description-box h4 {
+    margin-bottom: 10px;
 }
 
-.manga-description {
-    font-size: 1rem;
+.description-box p {
+    color: #ccc;
     line-height: 1.6;
-    color: white;
-    text-align: justify;
 }
 
-.section-title {
-    font-size: 1.75rem;
+/* BUTTON */
+.btn-purple {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    border: none;
+    color: white;
     font-weight: 600;
-    margin-bottom: 1.5rem;
-    color: white;
-    border-bottom: 2px solid #7a288a;
-    padding-bottom: 0.5rem;
 }
 
-.chapters-list {
-    flex: 1;
+/* CHAPTER */
+.chapter-section {
+    margin-top: 40px;
+}
+
+.chapter-list {
+    margin-top: 10px;
 }
 
 .chapter-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    flex: 1;
-    cursor: pointer;
-    color: white;
-    border-bottom: 0.5px solid gray;
+    padding: 12px 15px;
+    background: #1a1a2e;
+    border-radius: 8px;
+    margin-bottom: 8px;
     text-decoration: none;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    color: white;
+    transition: 0.2s;
 }
-
 
 .chapter-item:hover {
-    color: #8B5CF6;
-}
-
-.chapter-info {
-    flex: 1;
-}
-
-.chapter-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-.chapter-action {
-    font-size: 1.2rem;
-    transition: opacity 0.2s ease;
-    opacity: 0;
-    color: #8b5cf6;
-}
-
-.chapter-item:hover .chapter-action {
-    opacity: 100;
+    background: #7c3aed;
 }

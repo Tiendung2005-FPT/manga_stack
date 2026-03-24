@@ -53,6 +53,14 @@
       "favoriteManga": [
         "77bee52c-d2d6-44ad-a33a-1734c1fe696a"
       ]
+    },
+    {
+      "userId": "user1774275955274",
+      "favoriteManga": [
+        "eb2d1a45-d4e7-4e32-a171-b5b029c5b0cb",
+        "77bee52c-d2d6-44ad-a33a-1734c1fe696a"
+      ],
+      "id": "HF2FQaM"
     }
   ],
   "manga": [
@@ -4026,6 +4034,12 @@
       "mangaId": "c4ca02fb-8378-433b-8049-fbbea5d25cba",
       "userId": "user01",
       "rating": 1
+    },
+    {
+      "id": "rating-1774328884731",
+      "mangaId": "eb2d1a45-d4e7-4e32-a171-b5b029c5b0cb",
+      "userId": "user1774275955274",
+      "rating": 5
     }
   ]
 }

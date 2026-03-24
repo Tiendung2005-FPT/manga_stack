@@ -10,12 +10,24 @@ export const NavigateContext = createContext();
 
 export default function Header() {
     const navigate = useNavigate();
-    const location = useLocation(); 
+    const location = useLocation();
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        setCurrentUser(user ? JSON.parse(user) : null);
+        const loadUser = () => {
+            const user = localStorage.getItem("currentUser");
+            setCurrentUser(user ? JSON.parse(user) : null);
+        };
+
+        loadUser();
+
+        window.addEventListener("login", loadUser);
+        window.addEventListener("logout", loadUser);
+
+        return () => {
+            window.removeEventListener("login", loadUser);
+            window.removeEventListener("logout", loadUser);
+        };
     }, []);
 
     return (
@@ -26,7 +38,6 @@ export default function Header() {
 
                 <div className="d-flex gap-3 justify-content-center align-items-center">
                     
-                 
                     {!location.pathname.startsWith("/browse") && (
                         <HeaderSearch />
                     )}

@@ -73,51 +73,51 @@ export default function Auth() {
     }
 
     const handleLogin = async () => {
-        const identifier = username || email;
+    const identifier = username || email;
 
-        if (!identifier.trim() || !password.trim()) {
-            alert('Please fill in all fields');
+    if (!identifier.trim() || !password.trim()) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    try {
+        const usersResponse = await axios.get('http://localhost:9999/users');
+        const users = usersResponse.data;
+
+        const user = users.find(u =>
+            u.username.toLowerCase() === identifier.toLowerCase() ||
+            u.email.toLowerCase() === identifier.toLowerCase()
+        );
+
+        if (!user) {
+            alert('User not found');
             return;
         }
 
-        try {
-            const usersResponse = await axios.get('http://localhost:9999/users');
-            const users = usersResponse.data;
+        const isPasswordValid = await bcrypt.compare(password, user.password);
 
-            const user = users.find(u =>
-                u.username.toLowerCase() === identifier.toLowerCase() ||
-                u.email.toLowerCase() === identifier.toLowerCase()
-            );
-
-            if (!user) {
-                alert('User not found');
-                return;
-            }
-
-            const isPasswordValid = await bcrypt.compare(password, user.password);
-
-            if (!isPasswordValid) {
-                alert('Invalid password');
-                return;
-            }
-
-            localStorage.setItem('currentUser', JSON.stringify({
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                role: user.role
-            }));
-
-            alert('Login successful!');
-            // Redirect to home page
-            navigate('/home');
-
-        } catch (error) {
-            console.error('Login error:', error);
-            alert('Login failed. Please try again.');
+        if (!isPasswordValid) {
+            alert('Invalid password');
+            return;
         }
-    }
 
+        localStorage.setItem('currentUser', JSON.stringify({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+        }));
+
+        window.dispatchEvent(new Event("login"));
+
+        alert('Login successful!');
+        navigate('/home');
+
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('Login failed. Please try again.');
+    }
+};
     return (
         <div className="auth-container">
             <div className="form-container">
