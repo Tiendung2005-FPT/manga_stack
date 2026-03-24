@@ -13,13 +13,25 @@ export default function MangaCRUD() {
         coverUrl: '',
         status: 'ongoing',
         isVisible: true,
-        year: new Date().getFullYear()
+        year: new Date().getFullYear(),
+        genres: []
     });
+    const [allGenres, setAllGenres] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchMangas();
+        fetchAllGenres();
     }, []);
+
+    const fetchAllGenres = async () => {
+        try {
+            const res = await axios.get("http://localhost:9999/genres");
+            setAllGenres(res.data);
+        } catch (error) {
+            console.error("Failed to fetch genres", error);
+        }
+    };
 
     const fetchMangas = async () => {
         try {
@@ -39,7 +51,8 @@ export default function MangaCRUD() {
             coverUrl: '',
             status: 'ongoing',
             isVisible: true,
-            year: new Date().getFullYear()
+            year: new Date().getFullYear(),
+            genres: []
         });
     };
 
@@ -52,7 +65,8 @@ export default function MangaCRUD() {
                 coverUrl: manga.coverUrl,
                 status: manga.status,
                 isVisible: manga.isVisible,
-                year: manga.year
+                year: manga.year,
+                genres: manga.genres || []
             });
         }
         setShowModal(true);
@@ -79,7 +93,6 @@ export default function MangaCRUD() {
             } else {
                 payload.id = crypto.randomUUID();
                 payload.uploadedAt = new Date().toISOString();
-                payload.genres = [];
                 await axios.post("http://localhost:9999/manga", payload);
             }
             fetchMangas();
@@ -210,6 +223,27 @@ export default function MangaCRUD() {
                                 />
                             </Form.Group>
                         </div>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Genres</Form.Label>
+                            <div className="d-flex flex-wrap gap-3 p-3 border rounded" style={{ borderColor: 'var(--admin-border)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+                                {allGenres.map(genre => (
+                                    <Form.Check
+                                        key={genre.id}
+                                        type="checkbox"
+                                        id={`genre-${genre.id}`}
+                                        label={genre.name}
+                                        checked={formData.genres.includes(genre.id)}
+                                        onChange={(e) => {
+                                            const selectedGenres = e.target.checked
+                                                ? [...formData.genres, genre.id]
+                                                : formData.genres.filter(id => id !== genre.id);
+                                            setFormData({ ...formData, genres: selectedGenres });
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>Cancel</Button>
