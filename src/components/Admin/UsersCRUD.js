@@ -11,6 +11,7 @@ export default function UsersCRUD() {
     const [editingUser, setEditingUser] = useState(null);
     const [formData, setFormData] = useState({ username: '', email: '', password: '', role: 'role2' });
     const [currentUser, setCurrentUser] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const loggedIn = JSON.parse(localStorage.getItem('currentUser'));
@@ -85,9 +86,21 @@ export default function UsersCRUD() {
 
     return (
         <div className="admin-dashboard">
-            <div className="admin-table-header">
+            <div className="admin-table-header d-flex flex-column align-items-start gap-3">
                 <h2 className="admin-page-title mb-0">Users Management</h2>
-                <button className="admin-btn admin-btn-primary" onClick={() => handleShow()}>+ Add User</button>
+                <div className="d-flex gap-3 align-items-center">
+                    <div className="admin-search-container">
+                        <span className="admin-search-icon">🔍</span>
+                        <input
+                            type="text"
+                            placeholder="Search by username or email..."
+                            className="admin-search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <button className="admin-btn admin-btn-primary" onClick={() => handleShow()}>+ Add User</button>
+                </div>
             </div>
 
             <div className="admin-table-container">
@@ -102,7 +115,10 @@ export default function UsersCRUD() {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(u => (
+                        {users.filter(u =>
+                            u.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            u.email.toLowerCase().includes(searchTerm.toLowerCase())
+                        ).map(u => (
                             <tr key={u.id}>
                                 <td>{u.id}</td>
                                 <td>{u.username}</td>

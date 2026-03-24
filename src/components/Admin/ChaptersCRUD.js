@@ -16,6 +16,7 @@ export default function ChaptersCRUD() {
         pages: ''
     });
     const [filterMangaId, setFilterMangaId] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchMangas();
@@ -135,6 +136,16 @@ export default function ChaptersCRUD() {
                 <h2 className="admin-page-title mb-0">Chapters Management</h2>
 
                 <div className="d-flex align-items-center gap-3">
+                    <div className="admin-search-container">
+                        <span className="admin-search-icon">🔍</span>
+                        <input
+                            type="text"
+                            placeholder="Search chapters..."
+                            className="admin-search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
                     <Form.Select
                         value={filterMangaId}
                         onChange={(e) => setFilterMangaId(e.target.value)}
@@ -162,7 +173,10 @@ export default function ChaptersCRUD() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredChapters.map(c => (
+                        {filteredChapters.filter(c => 
+                            (c.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                             c.chapterNumber.toString().includes(searchTerm))
+                        ).map(c => (
                             <tr key={c.id}>
                                 <td style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                     {getMangaTitle(c.mangaId)}

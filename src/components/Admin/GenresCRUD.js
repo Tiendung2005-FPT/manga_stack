@@ -8,6 +8,7 @@ export default function GenresCRUD() {
     const [showModal, setShowModal] = useState(false);
     const [editingGenre, setEditingGenre] = useState(null);
     const [formData, setFormData] = useState({ name: '' });
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchGenres();
@@ -65,9 +66,21 @@ export default function GenresCRUD() {
 
     return (
         <div className="admin-dashboard">
-            <div className="admin-table-header">
+            <div className="admin-table-header d-flex flex-column align-items-start gap-3">
                 <h2 className="admin-page-title mb-0">Genres Management</h2>
-                <button className="admin-btn admin-btn-primary" onClick={() => handleShow()}>+ Add Genre</button>
+                <div className="d-flex gap-3 align-items-center">
+                    <div className="admin-search-container">
+                        <span className="admin-search-icon">🔍</span>
+                        <input
+                            type="text"
+                            placeholder="Search genres..."
+                            className="admin-search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <button className="admin-btn admin-btn-primary" onClick={() => handleShow()}>+ Add Genre</button>
+                </div>
             </div>
 
             <div className="admin-table-container">
@@ -80,7 +93,9 @@ export default function GenresCRUD() {
                         </tr>
                     </thead>
                     <tbody>
-                        {genres.map(g => (
+                        {genres.filter(g =>
+                            g.name.toLowerCase().includes(searchTerm.toLowerCase())
+                        ).map(g => (
                             <tr key={g.id}>
                                 <td>{g.id}</td>
                                 <td>{g.name}</td>

@@ -15,6 +15,7 @@ export default function MangaCRUD() {
         isVisible: true,
         year: new Date().getFullYear()
     });
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchMangas();
@@ -90,9 +91,21 @@ export default function MangaCRUD() {
 
     return (
         <div className="admin-dashboard">
-            <div className="admin-table-header">
+            <div className="admin-table-header d-flex flex-column align-items-start gap-3">
                 <h2 className="admin-page-title mb-0">Manga Management</h2>
-                <button className="admin-btn admin-btn-primary" onClick={() => handleShow()}>+ Add Manga</button>
+                <div className="d-flex gap-3 align-items-center">
+                    <div className="admin-search-container">
+                        <span className="admin-search-icon">🔍</span>
+                        <input
+                            type="text"
+                            placeholder="Search by title..."
+                            className="admin-search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <button className="admin-btn admin-btn-primary" onClick={() => handleShow()}>+ Add Manga</button>
+                </div>
             </div>
 
             <div className="admin-table-container">
@@ -108,7 +121,9 @@ export default function MangaCRUD() {
                         </tr>
                     </thead>
                     <tbody>
-                        {mangas.map(m => (
+                        {mangas.filter(m =>
+                            m.title.toLowerCase().includes(searchTerm.toLowerCase())
+                        ).map(m => (
                             <tr key={m.id}>
                                 <td>
                                     <img src={m.coverUrl} alt="Cover" style={{ width: '50px', height: '70px', objectFit: 'cover', borderRadius: '4px' }} />

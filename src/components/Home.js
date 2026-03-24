@@ -41,11 +41,11 @@ export default function Home() {
                 }
             })
 
-            const topTen = mangaRatings.sort((a, b) => b.avg - a.avg).slice(0, 10);
+            const top = mangaRatings.sort((a, b) => b.avg - a.avg).slice(0, 12);
 
             const mangaSpotlight = mangaRatings.sort((a, b) => b.count - a.count)[0];
 
-            setManga(topTen);
+            setManga(top);
             setSpotlight(mangaSpotlight)
         };
 
