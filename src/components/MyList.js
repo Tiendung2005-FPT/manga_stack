@@ -26,9 +26,8 @@ export default function MyList() {
                     axios.get(`http://localhost:9999/manga/${id}`)
                 )
 
-                const mangaData = await Promise.all(mangaPromises)
-
-                setMangaList(mangaData.map(r => r.data))
+                const mangaData = (await Promise.all(mangaPromises)).map(r => r.data).filter(m => m.isVisible);
+                setMangaList(mangaData);
 
             } catch (err) {
                 console.error(err)

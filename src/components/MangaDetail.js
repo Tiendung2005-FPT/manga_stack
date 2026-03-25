@@ -20,6 +20,10 @@ export default function MangaDetail() {
             try {
                 const mangaRes = await axios.get(`http://localhost:9999/manga/${id}`)
                 const mangaData = mangaRes.data
+                if (!mangaData.isVisible) {
+                    setManga(null);
+                    return;
+                }
 
                 const ratingsRes = await axios.get('http://localhost:9999/ratings')
                 const ratingData = ratingsRes.data.filter(r => r.mangaId === id)
@@ -30,7 +34,6 @@ export default function MangaDetail() {
                     avgRating = sum / ratingData.length
                 }
 
-                // Check for current user's rating
                 const user = JSON.parse(localStorage.getItem("currentUser"))
                 if (user) {
                     const myRate = ratingData.find(r => r.userId === user.id)
@@ -38,7 +41,7 @@ export default function MangaDetail() {
                 }
 
                 const chaptersRes = await axios.get(`http://localhost:9999/chapters?mangaId=${id}`)
-                const chaptersData = chaptersRes.data
+                const chaptersData = chaptersRes.data.filter(c => c.isVisible);
 
                 if (mangaData.genres && mangaData.genres.length > 0) {
                     const genrePromises = mangaData.genres.map(genreId =>
@@ -175,7 +178,9 @@ export default function MangaDetail() {
         try {
             const res = await axios.get(`http://localhost:9999/chapters?mangaId=${manga.id}`);
 
-            const chapters = res.data.sort((a, b) => a.chapterNumber - b.chapterNumber);
+            const chapters = res.data
+                .filter(c => c.isVisible)
+                .sort((a, b) => a.chapterNumber - b.chapterNumber);
 
             if (chapters.length > 0) {
                 const firstChapter = chapters[0];

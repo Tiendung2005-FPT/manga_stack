@@ -18,7 +18,7 @@ export default function Home() {
     useEffect(() => {
         const fetchData = async () => {
             const mangaRes = await axios.get(`http://localhost:9999/manga`)
-            const mangaData = mangaRes.data;
+            const mangaData = mangaRes.data.filter(m => m.isVisible);
 
             const ratingRes = await axios.get('http://localhost:9999/ratings');
             const ratingData = ratingRes.data;
@@ -57,7 +57,9 @@ export default function Home() {
         try {
             const res = await axios.get(`http://localhost:9999/chapters?mangaId=${spotlight.id}`);
 
-            const chapters = res.data.sort((a, b) => a.chapterNumber - b.chapterNumber);
+            const chapters = res.data
+                .filter(c => c.isVisible)
+                .sort((a, b) => a.chapterNumber - b.chapterNumber);
 
             if (chapters.length > 0) {
                 const firstChapter = chapters[0];
@@ -79,7 +81,7 @@ export default function Home() {
                     </div>
                     <div className="d-flex flex-column spotlight-info">
                         <div className="spotlight-icon">SPOTLIGHT</div>
-                        <h1 className="spotlight-title">{spotlight.title}</h1>
+                        <h1 className="spotlight-title" onClick={() => navigate(`/manga/${spotlight.id}`)}>{spotlight.title}</h1>
                         <div className="d-flex gap-3 align-items-center">
                             <div className="d-flex gap-1 align-items-center">
                                 <i className="bi bi-star-fill"></i>

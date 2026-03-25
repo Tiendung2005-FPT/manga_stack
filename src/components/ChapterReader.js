@@ -21,12 +21,18 @@ export default function ChapterReader() {
             try {
                 const chapterRes = await axios.get(`http://localhost:9999/chapters/${chapterId}`)
                 const chapterData = chapterRes.data
+                if(!chapterData.isVisible) {
+                    setChapter(null);
+                    return;
+                }
 
                 const mangaRes = await axios.get(`http://localhost:9999/manga/${id}`)
                 const mangaData = mangaRes.data
 
                 const chaptersRes = await axios.get(`http://localhost:9999/chapters?mangaId=${id}`)
-                const chaptersData = chaptersRes.data.sort((a, b) => a.chapterNumber - b.chapterNumber)
+                const chaptersData = chaptersRes.data
+                    .filter(c => c.isVisible)
+                    .sort((a, b) => a.chapterNumber - b.chapterNumber)
 
                 setChapter(chapterData)
                 setManga(mangaData)

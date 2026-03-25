@@ -18,7 +18,7 @@ async function fetchAllManga() {
 }
 
 function applyFilters(mangaList, { keyword, genreFilters, status, sortField, sortDirection }) {
-    let result = [...mangaList];
+    let result = mangaList.filter(m => m.isVisible);
 
     if (keyword.trim()) {
         const kw = keyword.toLowerCase();

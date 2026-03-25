@@ -36,7 +36,10 @@ export default function MangaCRUD() {
     const fetchMangas = async () => {
         try {
             const res = await axios.get("http://localhost:9999/manga");
-            setMangas(res.data);
+            const data = res.data;
+            console.log(data);
+
+            setMangas(data.sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt)));
         } catch (error) {
             console.error("Failed to fetch mangas", error);
         }
