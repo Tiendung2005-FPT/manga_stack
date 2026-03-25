@@ -1,10 +1,10 @@
-# 📚 MangaStack
+# MangaStack
 
 A modern, full-featured manga reading and management platform built with ReactJS. MangaStack is a web application that allows users to browse, read, and manage their favorite manga titles with an intuitive interface. Administrators can manage the entire platform including users, manga, chapters, and genres.
 
 ---
 
-## 🎯 Project Overview
+##  Project Overview
 
 **MangaStack** is a comprehensive manga library and reading application designed to provide an engaging experience for manga enthusiasts. The platform serves three main user roles:
 
@@ -16,19 +16,19 @@ The application uses a modern React-based frontend with a JSON-based mock backen
 
 ---
 
-## ✨ Features
+##  Features
 
 ### Guest Features
-- 🏠 **Browse Home Page**: View trending and highly-rated manga with a spotlight feature
-- 🔍 **Search & Filter**: Search manga by title or description
-- 📋 **Browse Catalog**: View comprehensive manga catalog with advanced filtering options
-- ⚙️ **Advanced Filters**:
+-  **Browse Home Page**: View trending and highly-rated manga with a spotlight feature
+-  **Search & Filter**: Search manga by title or description
+-  **Browse Catalog**: View comprehensive manga catalog with advanced filtering options
+-  **Advanced Filters**:
   - Filter by genres (include/exclude)
   - Filter by publication status (Ongoing/Completed)
   - Sort by Title, Year, or Upload Date
-- 📖 **Read Chapters**: Access and read manga chapters in multiple viewing modes
-- ⭐ **View Ratings**: See community ratings and chapter information
-- 📱 **Responsive Design**: Optimized for desktop and mobile devices
+-  **Read Chapters**: Access and read manga chapters in multiple viewing modes
+-  **View Ratings**: See community ratings and chapter information
+-  **Responsive Design**: Optimized for desktop and mobile devices
 
 ### User Features (Authenticated)
 - 👤 **User Registration & Login**: Create account or sign in with credentials
