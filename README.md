@@ -155,7 +155,7 @@ manga_stack/
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/manga_stack.git
+git clone https://github.com/Tiendung2005-FPT/manga_stack
 cd manga_stack
 ```
 
